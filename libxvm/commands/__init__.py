@@ -20,7 +20,12 @@ def destroy(argparser=argparser):
         sys.exit(0)
     vmdir = os.path.join(vms_dir, ns.name)
     if os.path.exists(vmdir):
-        os.remove()
+        for root, dirs, files in os.walk(vmdir, topdown=True):
+            for d in dirs:
+                os.rmdir(os.path.join(root, d))
+            for f in files:
+                os.remove(os.path.join(root, f))
+            os.rmdir(root)
     else:
         exit_with_failure("vm does not exist")
 
