@@ -52,4 +52,6 @@ def extract_file(image, extract_file, to_file):
                         if not chunk:
                             break
                         fp.write(chunk)
+                return
+    raise Exception("File not found")
 
