@@ -7,7 +7,7 @@ from libxvm.commands import COMMANDS, argparser
 def main():
     argparser.add_argument('command', help='Run this command')
     argparser.add_argument('--help', '-h', action='store_true')
-    argparser.epilog = "Run `xvm list` to see a list of available commands."
+    argparser.epilog = "Run `xvm commands` to see a list of available commands."
     ns, argv = argparser.parse_known_args()
     if ns.command and ns.command in COMMANDS:
         argparser.supress_positional('command')

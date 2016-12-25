@@ -1,7 +1,17 @@
 '''
 Utility methods for working with iso9660 filesystem images
 '''
+import os
 import isoparser
+
+def isiso(path):
+    "True if the file looks like an iso"
+    try:
+        parsed = isoparser.parse(path)
+    except isoparser.source.SourceError:
+        return False
+    return True
+
 
 def iso_walk(path, root, top_down=False):
     dirs = []
@@ -24,7 +34,7 @@ def iso_walk(path, root, top_down=False):
                 yield b
 
 
-def extract_iso_file(image, extract_file, to_file):
+def extract_file(image, extract_file, to_file):
     extract_dir = os.path.dirname(extract_file)
     extract_filename = os.path.basename(extract_file)
     def matches(path):

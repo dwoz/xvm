@@ -35,13 +35,21 @@ def kexec_args(config):
             disk_image, part = parse_extract_config(extract_kernel)
         except:
             exit_with_failure("Invalid extract_kernel parameter")
-        parts = ext.attach_image(os.path.join(config['dir'], disk_image))
-        mount = parts[int(part)][0]
-        ext.extract_file(mount, opts['initrd'], os.path.join(config['dir'], '.initrd'))
-        initrd = '.initrd'
-        ext.extract_file(mount, opts['kernel'], os.path.join(config['dir'], '.kinit'))
-        kernel = '.kinit'
-        ext.detach_image(parts[0][0])
+        image_path = os.path.join(config['dir'], disk_image)
+        if iso.isiso(image_path):
+            iso.extract_file(image_path, opts['initrd'], os.path.join(config['dir'], '.initrd'))
+            initrd = '.initrd'
+            iso.extract_file(image_path, opts['kernel'], os.path.join(config['dir'], '.kinit'))
+            kernel = '.kinit'
+        else:
+            # Ext filesystems
+            parts = ext.attach_image(image_path)
+            mount = parts[int(part)][0]
+            ext.extract_file(mount, opts['initrd'], os.path.join(config['dir'], '.initrd'))
+            initrd = '.initrd'
+            ext.extract_file(mount, opts['kernel'], os.path.join(config['dir'], '.kinit'))
+            kernel = '.kinit'
+            ext.detach_image(parts[0][0])
     kernel_path = os.path.join(config['dir'], kernel)
     initrd_path = os.path.join(config['dir'], initrd)
     args.append('-f')
