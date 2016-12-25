@@ -1,0 +1,4 @@
+humanfriendly
+pyyaml
+distorm3
+-e git+git@github.com:dwoz/isoparser.git#egg=isoparser
